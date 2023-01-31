@@ -4,8 +4,7 @@ configured to allow incoming connections to ports 25565 and 25566.
 
 * Port 25565 is where the minecraft clients will connect to
   (the actual reverse proxy part).
-* Port 25566 is where the minecraft_server_exposer will connect to
-  (MAX_NO_OF_CLIENTS times).
+* Port 25566 is where the minecraft_server_exposer will connect to.
 */
 
 const LISTEN_PORT_MINECRAFT: u16 = 25565;
@@ -72,8 +71,9 @@ fn main() {
         }
     });
 
-    // Main thread: brings together pairs of proxy and mc client TcpStreams and
-    //              creates 2 new threads for each pair (1 for each direction):
+    // Main thread: brings together pairs of proxy and minecraft client
+    //              TcpStreams and creates 2 new threads for each pair
+    //              (1 for each direction of traffic):
     loop {
         while PROXY_CONNECTIONS.read().unwrap().is_empty() || MC_CLIENT_CONNECTIONS.read().unwrap().is_empty() {
             // wait until there is both a proxy and a client connection that we can join
